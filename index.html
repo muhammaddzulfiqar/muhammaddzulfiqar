@@ -37,8 +37,8 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#tugas1" class="page-scroll">Tugas 1</a></li>
-        <li><a href="#tugas2" class="page-scroll">Tugas 2</a></li>
+        <li><a href="#tugas1" class="page-scroll">Tugas</a></li>
+        <!-- <li><a href="#tugas2" class="page-scroll">Tugas</a></li> -->
         <!-- <li><a href="">About3</a></li> -->
       </ul>
     </div>
@@ -61,41 +61,93 @@
     <div class="container">
       <div class="row">
       <div class="col-sm-12">
-        <h2 class="text-center">Query Processing</h2>
+        <h2 class="text-center">Transaksi Requirement ACID</h2>
         <hr>
       </div>
       </div>
       <div class="row">
         <div class="col-sm-6">
-          <p class="pKiri"> Proses pengambilan data dari database dalam memenuhi permintaan pemakai. <br>
-1.   Parsing and translation <br>
- &nbsp; &nbsp; Melakukan check syntax&grammar, validasi relasi yang digunakan
- mengubah query/SQL ke dlm bentuk yg bisa diolah oleh Query Processing Engine dalam bentuk aljabar relasi, struktur (tree, graph) <br> <br>
-2.   Optimization <br> 
-  &nbsp; &nbsp; Membuat  evaluation plan yang optimal (dengan cost yang rendah) <br> <br>
-3.    Evaluation <br>
-  &nbsp; &nbsp; Pemilihan query-evaluation plan terbaik(cost) ,melakukan eksekusi terhadap query tersebut yang menghasilkan jawaban query. <br> <br>
-<img src="img/querry.png"><br>
+          <p class="pKiri"> &nbsp;&nbsp;&nbsp; Transaksi pada basis data merupakan sekumpulan unit proses,dalam hal ini query, yang memiliki awal dan akhir. Sekumpulan query tersebut diawali oleh syntax BEGIN dan diakhiri syntax END. <br>
+            &nbsp;- Sebuah transaksi adalah unit eksekusi program yang mengakses dan mungkin <br>
+            &nbsp; &nbsp;mengubah beberapa item data. <br>
+            &nbsp;- Suatu transaksi harus melihat database yang konsisten. <br>
+            &nbsp;- Selama eksekusi transaksi, database mungkin tidak konsisten. <br>
+            &nbsp;- Ketika sebuah transaksi dianggap commit maka database harus konsisten. <br> <br>
+            &nbsp;&nbsp; &nbsp;Dua hal yang berkaitan dengan manajemen transaksi:<br>
+            &nbsp;– Kegagalan fungsi (Failures), terdiri dari kegagalan perangkat keras (hardware) dan <br>
+            &nbsp;&nbsp;system crash <br>
+            &nbsp;– Eksekusi beberapa transaksi secara bersama <br> <br>
+
+&nbsp;&nbsp;&nbsp; ACID merupakan kependekan dari (Atomicity, Consistency, isolation, Durability) yaitu 4 properti yang harus dimiliki pada transaksi pada basis data. <br> <br>
+
+Untuk menjaga integritas data, database sistem harus menjamin: <br>
+- <strong>Atomicity</strong>. Jika semua operasi pada sebuah transaksi sukses maka transaksi dianggap <br>
+&nbsp; sukses, jika salahsatu  operasi pada suatu transaksi gagal maka transaksi dianggap <br>
+&nbsp; gagal. <br>
+- <strong>Consistency</strong>. Eksekusi sebuah transaksi secara terisolasi bertujuan untuk menjaga <br>
+&nbsp; konsistensi database. <br>
+- <strong>Isolation</strong>. Meskipun ada beberapa transaksi yang berlangsung bersamaan, masing- <br>
+&nbsp; masing transaksi tidak boleh mengetahui transaksi lain yang sedang berlangsung. Hasil <br>
+&nbsp; transaksi sementara harus disembunyikan dari transaksi lain yang sedang berlangsung. <br>
+&nbsp; Sehingga, untuk pasangan transaksi Ta dan Tb, yang terlihat oleh Ta adalah Tb selesai <br>
+&nbsp; melakukan  eksekusi sebelum Ta mulai, atau  Tb memulai eksekusi setelah Ta selesai. <br>
+- <strong>Durability</strong>. Setelah sebuah transaksi sukses dilakukan, perubahan-perubahan yang <br>
+&nbsp; dibuatnya terhadap database bersifat permanen, bahkan jika terjadi kegagalan sistem.
+
+
+<img src="img/querry.jpg"><br>
 
         </div>
         <div class="col-sm-6">
-         <p class="pKanan"><img src="img/querry2.png"><br> <br>
+         <p class="pKanan"><!-- <img src="img/querry2.jpg"><br> <br> -->
+<strong>Atomicity</strong> <br>
 
-         <strong> Pengukuran biaya querry : </strong><br>
- &nbsp; &nbsp;Biaya evaluasi query dapat diukur dari banyaknya sumber daya sistem yang digunakan, misl: pengaksesan disk,waktu CPU,dan waktu komunikasi <br> <br>
- &nbsp; &nbsp; Dalam pemrosesan query file scan merupakan operasi paling dasar dalam pengaksesan data. Penelusuran ini menggunakan algoritma pencarian untuk menemukan dan mengambil record data yang memenuhi kondisi seleksi. <br>
-Algoritma dasar : <br>
-&nbsp; - A1(Sequential Search) <br>
-&nbsp; - A2(Binary Search) <br>
-&nbsp; - A3(primary index,key,kesamaan) <br>
-&nbsp; - A4(Primary Key,non-key,kesamaan) <br>
-&nbsp; - A5(Secondary index, kesamaan) <br>
-&nbsp; - A6(Primary Key,perbandingan) <br>
-&nbsp; - A7(Secondary index, perbandingan) <br> <br>
+&nbsp;&nbsp;&nbsp;Adalah suatu aturan dimana perubahan dilakukan secara keseluruhan atau tidak sama sekali. Sehingga jika di tengah transaksi terjadi kegagalan maka seruluruh perubahan akan di batalkan dan di kembalikan kekondisi semula. Kegagalan disini bisa terjadi karena aplikasi, system, database dsb. <br> <br>
 
+&nbsp;&nbsp;&nbsp;Contoh (Ambil kasus transfer di suatu bank dari rek A ke rek B dengan nilai transfer 2500): <br> <br>
+Maka stepnya adalah sebagai berikut: <br>
+
+1. Cek saldo A apakah mencukupi, jika mencukupi maka lanjut ke step ke-2. Jika tidak maka transaksi selesai dan tidak ada perubahan. <br>
+
+2. Kurangi saldo A sebesar 2500 <br>
+
+3. Tambahkan saldo B sebesar 2500 <br>
+
+Nah seluruh step diatas harus digabungkan sehingga apabila setelah step ke-2 terjadi kesalahan maka seluruh perubahan transaksi harus di batalkan. Setelah transaksi berhasil maka akan di lakukan commit. <br> <br> 
+
+<strong>Consistency</strong> <br>
+
+&nbsp;&nbsp;&nbsp;Menunjukkan konsistensi data yang ada setelah terjadi transaksi. Misalnya pada contoh kasus sebelumya, jika saldo A = 4000 dan saldo B = 500, maka setelah transaksi saldo A = 1500 dan saldo B = 3000. Nah beberapa hal yang biasanya ditangani oleh dbms adalah mengenai integrity constraint. Sedangkan jika berupa hasil perhitungan bisa di lakukan oleh aplikasi. <br> <br>
+
+<strong>Isolation</strong> <br>
+
+&nbsp;&nbsp;&nbsp;Pada prinsip isolation, data yang sedang di lakukan perubahan tidak boleh diakses oleh lebih dari satu operasi. Harus hanya satu operasi yang melakukan perubahan ini. Sehingga jika ada operasi lain yang akan merubah maka harus menunggu sampai transaksi yang berlangsung selesai. <br> <br>
+
+Misal ada 2 transaksi transfer antara rek A, dan rek B yang terjadi secara bersamaan: <br>
+
+T1 : Transfer A->B senilai 1000 <br>
+
+Kurangi saldo A 1000 <br>
+Tambah saldo B 1000 <br> <br>
+
+T2 : Transfer B->A senilai 2000 <br>
+
+Kurangi saldo B 2000 <br>
+Tambah saldo A 2000 <br> <br>
+&nbsp;&nbsp;&nbsp;Nah bayangkan jika transaksi tersebut terjadi secara bersamaan dan di proses tanpa isolasi sehingga akan menjadi: <br>
+
+Kurangi saldo A 1000 <br>
+Tambah saldo B 1000 <br>
+Kurangi saldo B 2000 <br>
+Tambah saldo A 2000 <br> <br>
+&nbsp;&nbsp;&nbsp;Jika terjadi kegagalan pada T1, maka data akan tidak konsisten sebab pada T2 sudah mengganti menambahkan saldo pada B. Demikian pentingnya isolasi, sehingga data tidak akan bisa di akses secara bersamaan oleh lebih dari satu operasi. <br> <br>
+
+<strong>Durability</strong> <br>
+
+&nbsp;&nbsp;&nbsp;Kemampuan DBMS untuk menyimpan data transaksi yang terjadi. Sehingga jika terjadi kegagalan, DBMS menjamin bahwa data transaksi yang telah tersimpan tidak akan hilang. Banyak DBMS yang menuliskan log untuk suatu transaksi yang dapat digunakan ketika terjadi error pada hardware maupun software. Setelah sebuah transaksi sukses dilakukan, perubahan-perubahan yang dibuatnya terhadap database bersifat permanen, bahkan jika terjadi kegagalan sistem.
 </p>
         </div>
-            <div class="container">
+            <!-- <div class="container">
       <div class="row">
       <div class="col-sm-12">
         <h2 class="text-center">Sistem Database</h2>
@@ -127,12 +179,14 @@ Algoritma dasar : <br>
     </div> 
     </div>
     </div> 
-    </section>
+    </section> -->
+
+
     <!-- akhir tugas1 -->
 
 
       <!-- tugas2 -->
-    <section class="about" id="tugas2">
+    <!-- <section class="about" id="tugas2">
     <div class="container">
       <div class="row">
       <div class="col-sm-12">
@@ -174,7 +228,7 @@ Berupa penjelasan mengenai indeks sebenarnya yang memutuskan untuk digunakan MyS
         </div>
       </div>
     </div> 
-    </section>
+    </section> -->
     <!-- akhir tugas2 -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
